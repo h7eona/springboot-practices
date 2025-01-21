@@ -1,11 +1,14 @@
-package ex01;
+package ex02;
 
 import java.util.Map;
 
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
+
+import ex02.runner.HelloWorldRunner;
 
 @SpringBootApplication
 public class ExApplication { // BootStrapping Class
@@ -14,17 +17,13 @@ public class ExApplication { // BootStrapping Class
 	public Map<?, ?> myMap() {
 		return Map.of("greetings", "Hello World");
 	}
+	
+	@Bean
+	public ApplicationRunner applicationRunner() {
+		return new HelloWorldRunner(myMap());
+	}
+	
 	public static void main(String[] args) {
-		/*ConfigurableApplicationContext ac = null;
-		
-		try {
-			ac = SpringApplication.run(ExApplication.class, args);
-			System.out.println("ExApplication runs..." + ac.getBean("myMap", Map.class).get("greetings"));
-		} catch(Exception ignored) {
-			
-		} finally {
-			ac.close();
-		}*/
 		
 		try(ConfigurableApplicationContext ac = SpringApplication.run(ExApplication.class, args);){
 			System.out.println("ExApplication runs..." + ac.getBean("myMap", Map.class).get("greetings"));
